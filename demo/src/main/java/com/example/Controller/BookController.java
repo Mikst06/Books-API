@@ -3,11 +3,7 @@ package com.example.Controller;
 import com.example.Model.Book;
 import com.example.Service.BookService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
@@ -20,7 +16,7 @@ public class BookController {
     public BookController(BookService bookService) { this.bookService = bookService; }
 
     @PostMapping(path="/add")
-    public @ResponseBody String addNewBook (@RequestParam Book book) {
+    public @ResponseBody String addNewBook (@RequestBody Book book) {
         bookService.bookSave(book);
 
         return "Saved\n";
@@ -31,9 +27,9 @@ public class BookController {
         return bookService.bookShowAll();
     }
 
-    @PostMapping(path="/delete")
+    @DeleteMapping(path="/delete")
     @Transactional
-    public @ResponseBody String deleteBook (@RequestParam Book book) {
+    public @ResponseBody String deleteBook (@RequestBody Book book) {
         bookService.bookDelete(book);
 
         return "Deleted\n";
