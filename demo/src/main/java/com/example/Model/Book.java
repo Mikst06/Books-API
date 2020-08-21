@@ -12,11 +12,11 @@ public class Book {
 
     private String author;
 
-    private String ISBN;
-
     private Integer number_of_pages;
 
     private Integer rating;
+
+    private String ISBN;
 
     public String getTitle() {
         return title;
