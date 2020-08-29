@@ -7,19 +7,23 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 @RequestMapping(path="/books")
 public class BookController {
+    private static final Logger LOG = LoggerFactory.getLogger(BookController.class);
 
     private final BookService bookService;
 
     public BookController(BookService bookService) { this.bookService = bookService; }
 
     @PostMapping(path="/add")
-    public @ResponseBody String addNewBook (@RequestBody Book book) {
+    public @ResponseBody void addNewBook (@RequestBody Book book) {
         bookService.bookSave(book);
 
-        return "Saved\n";
+        LOG.info("Book with ISBN -> {} <- has been ADDED", book.getISBN());
     }
 
     @GetMapping(path="/all")
@@ -29,10 +33,10 @@ public class BookController {
 
     @DeleteMapping(path="/delete")
     @Transactional
-    public @ResponseBody String deleteBook (@RequestBody Book book) {
+    public @ResponseBody void deleteBook (@RequestBody Book book) {
         bookService.bookDelete(book);
 
-        return "Deleted\n";
+        LOG.info("Book with ISBN -> {} <- has been DELETED", book.getISBN());
     }
 
 }
