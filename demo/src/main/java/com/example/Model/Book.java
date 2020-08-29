@@ -2,6 +2,8 @@ package com.example.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 public class Book {
@@ -56,5 +58,9 @@ public class Book {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public List<String> bookToList() {
+        return Arrays.asList(getTitle(), getAuthor(), getNumber_of_pages().toString(), getRating().toString(), getISBN());
     }
 }
