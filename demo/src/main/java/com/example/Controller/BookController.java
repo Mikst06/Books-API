@@ -21,9 +21,17 @@ public class BookController {
 
     @PostMapping(path="/add")
     public @ResponseBody void addNewBook (@RequestBody Book book) {
-        bookService.bookSave(book);
-
-        log.info("Book with ISBN -> {} <- has been ADDED", book.getISBN());
+        try {
+            if (bookService.ISBN_validator_check(book)) {
+                bookService.bookSave(book);
+                log.info("Book with ISBN -> {} <- has been ADDED", book.getISBN());
+            } else {
+                throw new IllegalArgumentException();
+            }
+        }
+        catch (IllegalArgumentException e) {
+            log.error("Invalid ISBN number --> {} <--\t Exception: " + e, book.getISBN());
+        }
     }
 
     @GetMapping(path="/all")
@@ -36,8 +44,8 @@ public class BookController {
     public @ResponseBody void deleteBook (@RequestBody Book book) {
         try{
         bookService.bookDelete(book);
-        log.info("Book with ISBN -> {} <- has been DELETED", book.getISBN());}
-        catch (Exception e){
+        log.info("Book with ISBN -> {} <- has been DELETED", book.getISBN());
+        } catch (Exception e){
             log.error("Exeption " + e + " has occurred");
         }
     }
