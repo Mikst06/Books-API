@@ -53,6 +53,16 @@ public class Book {
         this.rating = rating;
     }
 
+    @Override
+    public String toString() {
+        return "Book {" +
+                "title=" + title + '\'' +
+                "author" + author + '\'' +
+                "number_of_pages" + number_of_pages + '\'' +
+                "rating" + rating + '\'' +
+                "ISBN" + ISBN + '}';
+    }
+
     public static class Builder {
 
         private String title;
