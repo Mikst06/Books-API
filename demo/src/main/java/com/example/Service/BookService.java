@@ -2,6 +2,7 @@ package com.example.Service;
 
 import com.example.Model.Book;
 import com.example.Repository.BookRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +22,16 @@ public class BookService {
 
     public Iterable<Book> bookShowAll() {
         return bookRepository.findAll();
+    }
+
+    @Modifying
+    public void editBook(Book book) {
+        if(bookRepository.findByISBN(book.getISBN()) != null) {
+            bookRepository.save(book);
+        }
+        else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public boolean ISBN_validator_check(Book book) {

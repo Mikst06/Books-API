@@ -34,6 +34,16 @@ public class BookController {
         }
     }
 
+    @PostMapping(path="/update")
+    public @ResponseBody void updateBook (@RequestBody Book book) {
+        try {
+            bookService.editBook(book);
+            log.info("Book with ISBN -> {} <- has been EDITED", book.getISBN());
+        } catch (Exception e) {
+            log.error("Exeption " + e + " has occurred");
+        }
+    }
+
     @GetMapping(path="/all")
     public @ResponseBody Iterable<Book> getAllBooks() {
         return bookService.bookShowAll();
