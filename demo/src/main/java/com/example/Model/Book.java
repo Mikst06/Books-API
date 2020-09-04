@@ -6,11 +6,12 @@ import javax.persistence.Id;
 @Entity
 public class Book {
 
-    @Id
+
     private String title;
     private String author;
     private Integer number_of_pages;
     private Integer rating;
+    @Id
     private String ISBN;
 
     public String getTitle() {
