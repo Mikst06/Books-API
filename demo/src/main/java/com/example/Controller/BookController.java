@@ -1,5 +1,6 @@
 package com.example.Controller;
 
+import com.example.Exceptions.ClientInputException;
 import com.example.Model.Book;
 import com.example.Service.BookService;
 import org.springframework.stereotype.Controller;
@@ -31,6 +32,8 @@ public class BookController {
         }
         catch (IllegalArgumentException e) {
             log.error("Invalid ISBN number --> {} <--\t Exception: " + e, book.getISBN());
+
+            throw new ClientInputException("Invalid ISBN number", e);
         }
     }
 
@@ -39,8 +42,10 @@ public class BookController {
         try {
             bookService.editBook(book);
             log.info("Book with ISBN -> {} <- has been EDITED", book.getISBN());
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             log.error("Exeption " + e + " has occurred");
+
+            throw new ClientInputException("Gived book doesn't exist", e);
         }
     }
 
