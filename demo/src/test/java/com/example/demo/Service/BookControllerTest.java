@@ -1,6 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.Controller.BookController;
+import com.example.Exceptions.ClientInputException;
 import com.example.Model.Book;
 import com.example.Service.BookService;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +29,7 @@ public class BookControllerTest {
     @InjectMocks
     private BookController controller;
 
-    private Book book1, book2, book3;
+    private Book book1, book2;
 
     @BeforeEach
     void init() {
@@ -58,6 +59,22 @@ public class BookControllerTest {
         Assertions.assertEquals(997, argumentCaptor.getValue().getNumber_of_pages());
         Assertions.assertEquals(4, argumentCaptor.getValue().getRating());
         Assertions.assertEquals("12321", argumentCaptor.getValue().getISBN());
+    }
+
+    @Test
+    public void When_ISBN_validator_check_throws_IllegalArgumentException_then_throw_ClientInputException() {
+        when(bookService.ISBN_validator_check(eq(book1)))
+                .thenThrow(IllegalArgumentException.class);
+
+        Assertions.assertThrows(ClientInputException.class, () -> controller.addNewBook(book1));
+    }
+
+    @Test
+    public void When_editBook_throws_IllegalArgumentException_then_throw_ClientInputException() {
+        doThrow(IllegalArgumentException.class)
+                .when(bookService).editBook(book1);
+
+        Assertions.assertThrows(ClientInputException.class, () -> controller.updateBook(book1));
     }
 
     @Test
